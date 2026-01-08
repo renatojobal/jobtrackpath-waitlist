@@ -1,65 +1,152 @@
-import Image from "next/image";
+'use client'
 
-export default function Home() {
+import { useState, FormEvent } from 'react'
+
+export default function WaitlistPage() {
+  const [email, setEmail] = useState('')
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [message, setMessage] = useState('')
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setStatus('loading')
+
+    // Simulate API call (replace with actual endpoint later)
+    setTimeout(() => {
+      setStatus('success')
+      setMessage('Thanks for joining! We\'ll notify you when we launch.')
+      setEmail('')
+    }, 1500)
+  }
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+    <div className="relative min-h-screen bg-gradient-to-b from-gray-900 via-black to-black overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-20 w-72 h-72 bg-[#31B19E] rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob"></div>
+        <div className="absolute top-40 right-20 w-72 h-72 bg-[#31B19E] rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-1/2 w-72 h-72 bg-[#31B19E] rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob animation-delay-4000"></div>
+      </div>
+
+      <main className="relative flex min-h-screen flex-col items-center justify-center px-6 py-12">
+        <div className="w-full max-w-2xl text-center space-y-8">
+          {/* Logo/Title */}
+          <div className="space-y-4">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-[#31B19E] to-[#289181] mb-6 shadow-lg shadow-[#31B19E]/20">
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+              </svg>
+            </div>
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
+              <span className="bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                JobTrackPath
+              </span>
+            </h1>
+            <p className="text-xl md:text-2xl text-gray-400 font-light">
+              Track your job applications with ease
+            </p>
+          </div>
+
+          {/* Description */}
+          <div className="max-w-xl mx-auto space-y-4">
+            <p className="text-lg text-gray-300 leading-relaxed">
+              Manage your job search journey with a powerful Kanban board, track conversations with recruiters, and get AI-powered insights.
+            </p>
+            <div className="flex flex-wrap gap-3 justify-center">
+              <span className="px-4 py-2 rounded-full bg-gray-800/50 border border-gray-700 text-sm text-gray-300">
+                📋 Kanban Board
+              </span>
+              <span className="px-4 py-2 rounded-full bg-gray-800/50 border border-gray-700 text-sm text-gray-300">
+                💬 Conversation Tracker
+              </span>
+              <span className="px-4 py-2 rounded-full bg-gray-800/50 border border-gray-700 text-sm text-gray-300">
+                🤖 AI Summaries
+              </span>
+            </div>
+          </div>
+
+          {/* Waitlist Form */}
+          <div className="max-w-md mx-auto mt-12">
+            <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl p-8 shadow-2xl">
+              <h2 className="text-2xl font-semibold mb-2 text-white">Join the Waitlist</h2>
+              <p className="text-gray-400 mb-6">Be the first to know when we launch</p>
+
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    required
+                    disabled={status === 'loading' || status === 'success'}
+                    className="w-full px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#31B19E] focus:border-transparent transition-all"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={status === 'loading' || status === 'success'}
+                  className="w-full px-6 py-3 rounded-lg bg-[#31B19E] hover:bg-[#289181] text-white font-medium shadow-lg shadow-[#31B19E]/20 transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
+                >
+                  {status === 'loading' ? 'Joining...' : status === 'success' ? '✓ Joined!' : 'Join Waitlist'}
+                </button>
+
+                {status === 'success' && (
+                  <p className="text-sm text-[#31B19E] text-center animate-fade-in">
+                    {message}
+                  </p>
+                )}
+              </form>
+
+              <p className="text-xs text-gray-500 mt-4 text-center">
+                We respect your privacy. No spam, ever.
+              </p>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="mt-16 text-center text-sm text-gray-600">
+            <p>© 2026 JobTrackPath. All rights reserved.</p>
+          </div>
         </div>
       </main>
+
+      <style jsx>{`
+        @keyframes blob {
+          0%, 100% {
+            transform: translate(0, 0) scale(1);
+          }
+          33% {
+            transform: translate(30px, -50px) scale(1.1);
+          }
+          66% {
+            transform: translate(-20px, 20px) scale(0.9);
+          }
+        }
+        .animate-blob {
+          animation: blob 7s infinite;
+        }
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fade-in {
+          animation: fade-in 0.3s ease-out;
+        }
+      `}</style>
     </div>
-  );
+  )
 }
