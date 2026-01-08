@@ -1,11 +1,26 @@
 'use client'
 
-import { useState, FormEvent } from 'react'
+import { useState, FormEvent, useEffect } from 'react'
+import Image from 'next/image'
+
+const images = [
+  { src: '/images/board_trans_bg.png', alt: 'Kanban Board View' },
+  { src: '/images/conversation_trans_bg.png', alt: 'Conversation Tracker View' }
+]
 
 export default function WaitlistPage() {
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [message, setMessage] = useState('')
+  const [currentSlide, setCurrentSlide] = useState(0)
+
+  // Auto-advance carousel every 4 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % images.length)
+    }, 4000)
+    return () => clearInterval(timer)
+  }, [])
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -63,6 +78,68 @@ export default function WaitlistPage() {
                 🤖 AI Summaries
               </span>
             </div>
+          </div>
+
+          {/* Product Preview Carousel */}
+          <div className="relative max-w-5xl mx-auto mt-16 mb-8">
+            <div className="relative h-[400px] md:h-[500px] flex items-center justify-center">
+              {/* Carousel Images */}
+              {images.map((image, index) => (
+                <div
+                  key={index}
+                  className={`absolute inset-0 transition-opacity duration-1000 ${
+                    index === currentSlide ? 'opacity-100' : 'opacity-0'
+                  }`}
+                >
+                  <div className="relative h-full flex items-center justify-center animate-float">
+                    <Image
+                      src={image.src}
+                      alt={image.alt}
+                      width={1200}
+                      height={800}
+                      className="object-contain max-h-full w-auto drop-shadow-2xl"
+                      priority={index === 0}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Carousel Indicators */}
+            <div className="flex justify-center gap-2 mt-6">
+              {images.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentSlide(index)}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    index === currentSlide
+                      ? 'w-8 bg-[#31B19E]'
+                      : 'w-2 bg-gray-600 hover:bg-gray-500'
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
+            </div>
+
+            {/* Navigation Arrows */}
+            <button
+              onClick={() => setCurrentSlide((prev) => (prev - 1 + images.length) % images.length)}
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-12 h-12 rounded-full bg-gray-800/80 hover:bg-gray-700/80 border border-gray-700 flex items-center justify-center text-white transition-all duration-200 hover:scale-110"
+              aria-label="Previous slide"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button
+              onClick={() => setCurrentSlide((prev) => (prev + 1) % images.length)}
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-12 h-12 rounded-full bg-gray-800/80 hover:bg-gray-700/80 border border-gray-700 flex items-center justify-center text-white transition-all duration-200 hover:scale-110"
+              aria-label="Next slide"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
           </div>
 
           {/* Waitlist Form */}
@@ -145,6 +222,17 @@ export default function WaitlistPage() {
         }
         .animate-fade-in {
           animation: fade-in 0.3s ease-out;
+        }
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-20px);
+          }
+        }
+        .animate-float {
+          animation: float 6s ease-in-out infinite;
         }
       `}</style>
     </div>
