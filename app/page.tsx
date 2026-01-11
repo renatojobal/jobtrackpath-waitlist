@@ -25,13 +25,33 @@ export default function WaitlistPage() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setStatus('loading')
+    setMessage('')
 
-    // Simulate API call (replace with actual endpoint later)
-    setTimeout(() => {
+    try {
+      const response = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        setStatus('error')
+        setMessage(data.error || 'Failed to join waitlist. Please try again.')
+        return
+      }
+
       setStatus('success')
       setMessage('Thanks for joining! We\'ll notify you when we launch.')
       setEmail('')
-    }, 1500)
+    } catch (error) {
+      setStatus('error')
+      setMessage('Something went wrong. Please try again.')
+      console.error('Error submitting email:', error)
+    }
   }
 
   return (
@@ -146,7 +166,7 @@ export default function WaitlistPage() {
           <div className="max-w-md mx-auto mt-12">
             <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl p-8 shadow-2xl">
               <h2 className="text-2xl font-semibold mb-2 text-white">Join the Waitlist</h2>
-              <p className="text-gray-400 mb-6">Be the first to know when we launch</p>
+              <p className="text-gray-400 mb-6">Get exclusive launch discount + early access</p>
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
@@ -171,6 +191,12 @@ export default function WaitlistPage() {
 
                 {status === 'success' && (
                   <p className="text-sm text-[#31B19E] text-center animate-fade-in">
+                    {message}
+                  </p>
+                )}
+
+                {status === 'error' && (
+                  <p className="text-sm text-red-400 text-center animate-fade-in">
                     {message}
                   </p>
                 )}

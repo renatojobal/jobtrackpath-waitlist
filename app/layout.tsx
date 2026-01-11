@@ -13,8 +13,50 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "JobTrackPath - Join the Waitlist",
-  description: "Track your job applications with ease. Manage your job search journey with a powerful Kanban board, conversation tracker, and AI-powered insights.",
+  title: "JobTrackPath - Job Application Tracker | Exclusive Launch Discount",
+  description: "Join the waitlist for JobTrackPath - the ultimate job application tracker. Organize your job search with Kanban boards, track recruiter conversations, and get AI-powered insights. Sign up now for exclusive launch benefits!",
+  keywords: ["job application tracker", "job search organizer", "career management", "job hunt tool", "application tracking system", "kanban board jobs", "recruiter tracker", "AI job insights"],
+  authors: [{ name: "JobTrackPath" }],
+  creator: "JobTrackPath",
+  publisher: "JobTrackPath",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://jobtrackpath.com",
+    siteName: "JobTrackPath",
+    title: "JobTrackPath - Smart Job Application Tracker",
+    description: "Track your job applications with ease. Get exclusive launch discount! Manage your job search with Kanban boards, conversation tracking, and AI insights.",
+    images: [
+      {
+        url: "/images/board_trans_bg.png",
+        width: 1200,
+        height: 630,
+        alt: "JobTrackPath Kanban Board",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "JobTrackPath - Job Application Tracker",
+    description: "Join the waitlist & get exclusive launch discount! Track job applications with Kanban boards, conversation tracker & AI insights.",
+    images: ["/images/board_trans_bg.png"],
+    creator: "@jobtrackpath",
+  },
+  metadataBase: new URL("https://jobtrackpath.com"),
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default function RootLayout({
